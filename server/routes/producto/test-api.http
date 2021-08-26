@@ -1,0 +1,40 @@
+### PRUEBA DE API
+
+GET http://localhost:5000/api/
+
+### NUEVO PRODUCTO
+
+
+POST http://localhost:5000/api/producto/nuevo
+Content-Type: application/json
+
+{
+    "Titulo":"Iphone x",
+    "Precio":1000,
+    "Descripcion":"Este es un celular de muy buena calidad muy rapido"
+}
+
+### TODOS LOS PRODUCTOS
+
+GET http://localhost:5000/api/producto
+
+
+### PRODUCTO POR ID
+
+GET http://localhost:5000/api/producto/6126d260e9da82d5d2441249
+
+
+### BORRAR POR ID
+
+DELETE http://localhost:5000/api/producto/6126d260e9da82d5d2441249
+
+### EDITAR POR ID
+
+PUT http://localhost:5000/api/producto/6126d260e9da82d5d2441249
+Content-Type: application/json
+
+{
+    "Titulo":"Iphone K",
+    "Precio":1000,
+    "Descripcion":"Este es un celular de muy buena calidad muy rapido"
+}
