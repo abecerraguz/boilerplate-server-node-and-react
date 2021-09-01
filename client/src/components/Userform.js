@@ -25,6 +25,10 @@ const Userform = (props) => {
          Titulo: '',
          Precio : '',
          Descripcion : '',
+         colores:'',
+         ColorUno:'',
+         ColorDos:'',
+         ColorTres:'',
         //  Password : '',
         //  ConfirmPassword : '',
 
@@ -32,6 +36,11 @@ const Userform = (props) => {
             Titulo : '',
             Precio : '',
             Descripcion : '',
+            colores : '',
+            ColorUno:'',
+            ColorDos:'',
+            ColorTres:'',
+
             // Password : '',
             // ConfirmPassword : '',
             EnviadoOkey: 'Se han enviado los datos correctamente'
@@ -48,7 +57,7 @@ const Userform = (props) => {
     const reducer = ( state, action ) =>{
 
         // Este log recibe la data de dispatch({type:'CH_NOMBRE', value:event.target.value}) 
-        console.log('Valor de action-->', state);
+        // console.log('Valor de action-->', state);
   
         /*
         Podemos eveluar el type (Tipo de acción ) con un switch o sea evaluamos
@@ -87,6 +96,34 @@ const Userform = (props) => {
                     }
                 }
 
+                case 'CH_COLORES' : {
+                    return{
+                        ...state,
+                        colores:[action.value]
+                    }
+                }
+
+                case 'CH_COLORUNO' : {
+                    return{
+                        ...state,
+                        ColorUno:action.value
+                    }
+                }
+
+                case 'CH_COLORDOS' : {
+                    return{
+                        ...state,
+                        ColorDos:action.value
+                    }
+                }
+
+                case 'CH_COLORTRES' : {
+                    return{
+                        ...state,
+                        ColorTres:action.value
+                    }
+                }
+
                 // case 'CH_PASSWORD' : {
                 //     return{
                 //         ...state,
@@ -108,6 +145,10 @@ const Userform = (props) => {
                         Titulo : '',
                         Precio : '',
                         Descripcion : '',
+                        Colores:'',
+                        ColorUno:'',
+                        ColorDos:'',
+                        ColorTres:'',
                         // Password : '',
                         // ConfirmPassword : '',
                         ...validateOnSubmit(state),
@@ -125,6 +166,10 @@ const Userform = (props) => {
                         Titulo:action.value ='',
                         Precio:action.value ='',
                         Descripcion:action.value ='',
+                        Colores:action.value ='',
+                        ColorUno:action.value ='',
+                        ColorDos:action.value ='',
+                        ColorTres:action.value ='',
                         // Password:action.value ='',
                         // ConfirmPassword:action.value ='',
                         IngreseUsuario:action = 'Los Datos fueron ingresados' 
@@ -144,7 +189,7 @@ const Userform = (props) => {
     function validateOnSubmit(state) {
 
         // Desestructuramos el estado
-        const { Titulo, Precio, Descripcion, /*Password, ConfirmPassword*/ } = state;
+        const { Titulo, Precio, Descripcion, ColorUno, ColorDos, ColorTres,colores /*Password, ConfirmPassword*/ } = state;
 
         let validationErrs = {};
     
@@ -175,6 +220,43 @@ const Userform = (props) => {
         }else if(Descripcion.length < 3 && Descripcion < 0){
             validationErrs.Descripcion= "El producto debe tener al menos 3 caracteres";
         }
+
+        // Validacion ColorUno
+        if (!colores) {
+            validationErrs.colores = "El producto requiere un color uno";
+        }else if(colores.length > 3 && colores > 0){
+            validationErrs.colores = "";
+        }else if(colores.length < 3 && colores < 0){
+            validationErrs.colores = "El color uno debe tener al menos 3 caracteres";
+        }
+
+        // Validacion ColorUno
+        if (!ColorUno) {
+            validationErrs.ColorUno = "El producto requiere un color dos";
+        }else if(ColorUno.length > 3 && ColorUno > 0){
+            validationErrs.ColorUno = "";
+        }else if(ColorUno.length < 3 && ColorUno < 0){
+                validationErrs.ColorUno = "El color dos debe tener al menos 3 caracteres";
+        }
+
+        // Validacion ColorDos
+        if (!ColorDos) {
+            validationErrs.ColorDos = "El producto requiere un color dos";
+        }else if(ColorDos.length > 3 && ColorDos > 0){
+            validationErrs.ColorDos = "";
+        }else if(ColorDos.length < 3 && ColorDos < 0){
+            validationErrs.ColorDos = "El color dos debe tener al menos 3 caracteres";
+        }
+ 
+        // // Validacion ColorTres
+        if (!ColorTres) {
+            validationErrs.ColorTres = "El producto requiere un color tres";
+        }else if(ColorTres.length > 3 && ColorTres > 0){
+            validationErrs.ColorTres = "";
+        }else if(ColorTres.length < 3 && ColorTres < 0){
+            validationErrs.ColorTres = "El color tres debe tener al menos 3 caracteres";
+        }
+        
        
         // Validacion de Password
         // if (!Password) {
@@ -200,8 +282,15 @@ const Userform = (props) => {
         const formData = new FormData(form);
         const obj = {};
         for (const [campo, val] of formData.entries()) obj[campo] = val;
-     
-        const { success, message } = await crearNuevoProducto(obj);
+        console.log('DOC-->',obj)
+        const redefinicion = {
+            Titulo:obj.Titulo,
+            Precio:obj.Precio,
+            Descripcion:obj.Descripcion,
+            colores:[obj.ColorUno,obj.ColorDos,obj.ColorTres]
+        }
+        console.log('redefinicion-->',redefinicion)
+        const { success, message } = await crearNuevoProducto(redefinicion);
         
       
         if (success) {
@@ -212,6 +301,7 @@ const Userform = (props) => {
             // Se llama la fusnción del <Home/> , que llego por props desde 
             // <Home/>
             // onIngresar();
+            console.log('Llego Success--->',success )
             } else {
             window.alert(`No se ingresó. ${message}`);
             }
@@ -306,6 +396,69 @@ const Userform = (props) => {
                 :
                 null
                 }
+
+                <div className="contentForm__group">
+                    <label>Color uno</label>
+                    <input type="text"
+                        placeholder="Ingrese el color uno"
+                        className="form-control"
+                        name="ColorUno" 
+                        value={state.ColorUno}
+                        onChange={(event) => {
+                            dispatch({type:'CH_COLORUNO', value:event.target.value})
+                            dispatch({type:'SUBMIT_VALIDATE'})  
+                        }}
+                        id="ColorUno"
+                     />
+                </div>
+
+                {state.validationErrs.ColorUno?
+                    <span className="validation-errors" dangerouslySetInnerHTML={{ __html: state.validationErrs.ColorUno}}></span>
+                :
+                null
+                }
+
+                <div className="contentForm__group">
+                    <label>Color dos</label>
+                    <input type="text"
+                        placeholder="Ingrese el color dos"
+                        className="form-control"
+                        name="ColorDos" 
+                        value={state.ColorDos}
+                        onChange={(event) => {
+                            dispatch({type:'CH_COLORDOS', value:event.target.value})
+                            dispatch({type:'SUBMIT_VALIDATE'})  
+                        }}
+                        id="ColorDos"
+                     />
+                </div>
+
+                {state.validationErrs.ColorDos?
+                    <span className="validation-errors" dangerouslySetInnerHTML={{ __html: state.validationErrs.ColorDos}}></span>
+                :
+                null
+                } 
+
+                <div className="contentForm__group">
+                    <label>Color tres</label>
+                    <input type="text"
+                        placeholder="Ingrese el color tres"
+                        className="form-control"
+                        name="ColorTres" 
+                        value={state.ColorTres}
+                        onChange={(event) => {
+                            dispatch({type:'CH_COLORTRES', value:event.target.value})
+                            dispatch({type:'SUBMIT_VALIDATE'})  
+                        }}
+                        id="ColorTres"
+                     />
+                </div>
+
+                {state.validationErrs.ColorTres?
+                    <span className="validation-errors" dangerouslySetInnerHTML={{ __html: state.validationErrs.ColorTres}}></span>
+                :
+                null
+                }                 
  
                 {/* <div className="contentForm__group">
                     <label>Password</label>

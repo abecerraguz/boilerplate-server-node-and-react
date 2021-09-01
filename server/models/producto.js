@@ -29,7 +29,10 @@ const ProductoSchema = new mongoose.Schema({
       25,
       "La descripción de producto debe tener por lo menos 25 caracateres, se ingresó {VALUE}",
     ],
-  }
+  },
+  colores :[
+    {type:String}
+  ]
 });
 
 const ProductoModel = mongoose.model("producto", ProductoSchema);
